@@ -1,5 +1,5 @@
-# DAKBM-TesterMonks
-DAKBM-TesterMonks é um conjunto de testes automatizados para o site Kabum, desenvolvido com Node.js e Playwright.
+# Template-TesterMonks
+DA-Template-TesterMonks é um conjunto de testes automatizados generico para usar nos clientes, desenvolvido com Node.js e Playwright.
 Este repositório visa garantir a qualidade contínua das funcionalidades do Kabum por meio de testes end-to-end automatizados.
 
 ## 📋 Requisitos
@@ -48,18 +48,13 @@ npx playwright test --watch
 A estrutura do repositório é organizada da seguinte forma:
 
 ```bash
-DAKBM-TesterMonks/
+TesterMonks/
 ├── tests/                  # Diretório contendo os arquivos de teste
 │   ├── tests.spec.ts       # Todos os testes, para importar no TesterMonks
 ├── playwright.config.ts    # Configurações do Playwright
 ├── package.json            # Arquivo de configuração do projeto
 └── README.md               # Este arquivo
 ```
-
-## 📄 Planilha de Anotações
-Os testes estão mapeados na seguinte planilha do Google Sheets:
-
-[Plano de Testes Kabum ](https://docs.google.com/spreadsheets/d/1i7YWoIz-p12IHMbVG2zMqmirwMeVdpAvWLVOacwv9JY/edit?usp=sharing)
 
 ## 🛠️ Dependências
 Este projeto utiliza as seguintes bibliotecas para testes automatizados:
