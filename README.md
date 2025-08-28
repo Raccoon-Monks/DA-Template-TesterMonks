@@ -19,23 +19,17 @@ Instale as dependências:
 ```bash
 npm install
 npx playwright install
-sudo npx playwright install-deps
 ```
 
 ### No Codespace
-Clone este repositório:
-
-```bash
-git clone https://github.com/Raccoon-Monks/DAKBM-TesterMonks.git
-cd DAKBM-TesterMonks
-```
-
+Acesse o codespace no repositorio:
 Instale as dependências:
-
 ```bash
 npm install
 npx playwright install
+sudo npx playwright install-deps
 ```
+
 
 ## 🧪 Executando os Testes
 Para rodar todos os testes automatizados com Playwright, execute:
