@@ -1,0 +1,21 @@
+{
+  "name": "testeskabum",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:watch": "playwright test --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.19"
+  },
+  "dependencies": {
+    "@lcrespilho/playwright-fixtures": "^5.0.4",
+    "@lcrespilho/playwright-utils": "^1.7.1"
+  }
+}
