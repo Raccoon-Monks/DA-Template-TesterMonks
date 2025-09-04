@@ -11,7 +11,7 @@ Este repositório visa garantir a qualidade contínua das funcionalidades do Kab
 Clone este repositório:
 
 ```bash
-git clone https://github.com/Raccoon-Monks/DAKBM-TesterMonks.git
+git clone https://github.com/Raccoon-Monks/DA-Template-TesterMonks.git
 cd DAKBM-TesterMonks
 ```
 
