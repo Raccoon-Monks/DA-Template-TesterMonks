@@ -1,6 +1,6 @@
 # Template-TesterMonks
 DA-Template-TesterMonks é um conjunto de testes automatizados generico para usar nos clientes, desenvolvido com Node.js e Playwright.
-Este repositório visa garantir a qualidade contínua das funcionalidades do Kabum por meio de testes end-to-end automatizados.
+Este repositório visa garantir a qualidade contínua das funcionalidades do site por meio de testes end-to-end automatizados.
 
 ## 📋 Requisitos
 - Node.js 16 LTS ou superior
