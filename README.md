@@ -12,7 +12,7 @@ Clone este repositório:
 
 ```bash
 git clone https://github.com/Raccoon-Monks/DA-Template-TesterMonks.git
-cd DAKBM-TesterMonks
+cd DA-Template-TesterMonks
 ```
 
 Instale as dependências:
