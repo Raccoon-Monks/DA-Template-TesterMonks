@@ -1,6 +1,5 @@
 import { test, expect } from "@lcrespilho/playwright-fixtures";
-import { enableGADebug, flatRequestUrl } from "@lcrespilho/playwright-utils";
-import { Page } from "@playwright/test";
+import { enableGADebug } from "@lcrespilho/playwright-utils";
 
 const CLIENT = {
   NAME: "Exemplo",
@@ -11,11 +10,11 @@ const CLIENT = {
     content: "ga4",
     term: "automation"
   },
-  SS_URL: "https://www.kabum.com.br/ninjakabum/",
+  SS_URL: "",
   GA_REGEX:/.*\/g\/collect\?v=2.*/,
   ECOMM: {
-    HOMEPAGE: "https://www.kabum.com.br/",
-    PRODUCT_URL: "https://www.kabum.com.br/produto/468834",
+    HOMEPAGE: "https://www.exemple.com/",
+    PRODUCT_URL: "https://www.exemple.com/produto/468834",
     PRODUCT_ID: "468834",
     ADD_TO_CART_BTN: '[aria-label="Adicionar ao carrinho"]',
     TRANSACTION_ID: '45134487',
@@ -92,6 +91,8 @@ test.beforeEach(async ({ context, page }) => {
     await context.route(url => {
       try {
         const u = new URL(url);
+        if(u.pathname.includes('/gtm.js')) return false;
+
         return u.hostname === ss.hostname && u.pathname.startsWith(ss.pathname);
       } catch { return false; }
     }, r => r.abort());
