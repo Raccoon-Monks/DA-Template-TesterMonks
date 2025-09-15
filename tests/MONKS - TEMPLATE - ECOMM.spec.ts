@@ -2,7 +2,7 @@ import { test, expect } from "@lcrespilho/playwright-fixtures";
 import { enableGADebug } from "@lcrespilho/playwright-utils";
 
 const CLIENT = {
-  NAME: "Exemplo",
+  NAME: "Kabum",
   UTM: {
     source: "playwright",
     medium: "e2e",
@@ -10,12 +10,12 @@ const CLIENT = {
     content: "ga4",
     term: "automation"
   },
-  SS_URL: "",
+  SS_URL: "https://www.kabum.com.br/ninjakabum",
   GA_REGEX:/.*\/g\/collect\?v=2.*/,
   ECOMM: {
-    HOMEPAGE: "https://www.exemple.com/",
-    PRODUCT_URL: "https://www.exemple.com/produto/468834",
-    PRODUCT_ID: "468834",
+    HOMEPAGE: "https://www.kabum.com.br/",
+    PRODUCT_URL: "https://www.kabum.com.br/produto/111131",
+    PRODUCT_ID: "111131",
     ADD_TO_CART_BTN: '[aria-label="Adicionar ao carrinho"]',
     TRANSACTION_ID: '45134487',
     EVENTS: {
@@ -105,10 +105,7 @@ test.beforeEach(async ({ context, page }) => {
   page.locator(CLIENT.CONSENT.ACCEPT_BTN).click({ timeout: CLIENT.TIMEOUTS.DEFAULT }).catch(() => {});
 });
 
-test.afterEach(async ({ context }) => {
-  await context.close();
-});
-
+test.afterEach(async ({ context }) => await context.close() );
 
 test.describe(`${CLIENT.NAME} - E-commerce`, () => {
 

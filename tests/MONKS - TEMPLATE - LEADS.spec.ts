@@ -2,40 +2,24 @@ import { test, expect } from "@lcrespilho/playwright-fixtures";
 import { enableGADebug } from "@lcrespilho/playwright-utils";
 
 const CLIENT = {
-  NAME: "example",
-  SS_URL: "",
+  NAME: "Kabum",
+  SS_URL: "https://www.kabum.com.br/ninjakabum",
   GA_REGEX:/.*\/g\/collect\?v=2.*/,
   LEAD: {
     FORMS: [
       {
-        PAGE_URL: "https://example.com/Inscricoes/ETAPA-1/",
+        PAGE_URL: "https://www.kabum.com.br/",
         STEPS:[
           {
-            SELECTOR: 'form[id*="form-step1"]',
+            SELECTOR: 'form[id="formNewsletter"]',
             FIELDS: {
-              name: { selector: '[name="Nome"]', value: "Teste Playwright" },
-              email: { selector: '[name="Email"]', value: "qa+playwright@example.com" },
-              phone: { selector: '[name="Telefone"]', value: "(11) 99999-9999" },
-              cpf: { selector: '[name="Cpf"]', value: "92560795000" },
-              DataNasc: { selector: '[name="DataNascimento"]', value: "18/09/1994" },
-            },
-            SUBMIT_TERMS: 'label:has(input#aviso) span',
-            SUBMIT_BTN: '#step1-next',
-            GA4_EVENT_NAME: "funil_de_inscricao",
-          },
-          {
-            SELECTOR: 'form[id*="form-step2"]',
-            FIELDS: {
-              cep: { selector: '[name="Cep"]', value: "04570-000" },
-              complemento: { selector: '[name="Complemento"]', value: "casa" },
-              complemento2: { selector: '[name="Complemento"]', value: "casa" },
-              complemento3: { selector: '[name="Complemento"]', value: "casa" },
-              numero: { selector: '[name="Numero"]', value: "16" },
+              name: { selector: '[name="name"]', value: "Teste Playwright" },
+              email: { selector: '[name="email"]', value: "qa+playwright@example.com" }
             },
             SUBMIT_TERMS: '',
-            SUBMIT_BTN: '#step2-next',
-            GA4_EVENT_NAME: "funil_de_inscricao",
-          },
+            SUBMIT_BTN: 'button[type="submit"]',
+            GA4_EVENT_NAME: "send_event",
+          }
         ]
       },
     ]
@@ -76,7 +60,7 @@ test.beforeEach(async ({ context, page }) => {
   page.locator(CLIENT.CONSENT.ACCEPT_BTN).click({ timeout: CLIENT.TIMEOUTS.DEFAULT }).catch(() => {});
 });
 
-//test.afterEach(async ({ context }) => await context.close() );
+test.afterEach(async ({ context }) => await context.close() );
 
 test.describe(`${CLIENT.NAME} - Leads`, () => {
   for (const FORM of CLIENT.LEAD.FORMS) {
