@@ -11,60 +11,46 @@ const CLIENT = {
     term: "automation"
   },
   SS_URL: "",
-  GA_REGEX:/.*\/g\/collect\?v=2.*/,
+  GA_REGEX: /.*\/g\/collect\?v=2.*/,
   ECOMM: {
-    HOMEPAGE: "https://www.exemple.com/",
-    PRODUCT_URL: "https://www.exemple.com/produto/468834",
-    PRODUCT_ID: "468834",
-    ADD_TO_CART_BTN: '[aria-label="Adicionar ao carrinho"]',
-    TRANSACTION_ID: '45134487',
+    HOMEPAGE: "https://www.lojadomecanico.com.br",
+    PRODUCT_URL: "https://www.lojadomecanico.com.br/produto/153785",
+    PRODUCT_ID: "153785",
+    ADD_TO_CART_BTN: '#btn-comprar-product',
+    TRANSACTION_ID: '19105882',
     EVENTS: {
       ADD_TO_CART: "add_to_cart",
       PURCHASE: "purchase",
     },
     FORCED_PURCHASE: {
-      event: "purchase",
-      ecommerce: {
-        purchase: {
-          actionField: {
-            id: "45134487",
-            revenue: 23,
-            tax: 0,
-            shipping: 10.01,
-            coupon: "",
-            currency: "BRL",
-            discount: 1.13,
-            newCliente: false
-          },
-          products: [
-            {
-              name: "Cabo HDMI 2.0 4K PIX, 2 Metros, 19 Pinos - 018-2222",
-              id: "94087",
-              price: 14.12,
-              brand: "PIX",
-              category: "Periféricos/Cabos e Adaptadores/Cabos Vídeo",
-              quantity: 1,
-              coupon: "",
-              dimension01: 0,
-              dimension20: 0,
-              dimension21: "KaBuM!",
-              comission_group: "1P",
-              list: "[undefined]"
-            }
-          ],
-          payment: [
-            {
-              discount: 1.13,
-              couponDiscount: 0,
-              installmentMonths: 1,
-              installmentValues: 23,
-              shipping: 10.01,
-              tax: "",
-              total: 1.13,
-              type: "PIX"
-            }
-          ]
-        }
+      "event": "purchase",
+      "ecommerce": {
+        "transaction_id": "19105882",
+        "currency": "BRL",
+        "value": 25.39,
+        "shipping": 21.27,
+        "payment_type": "PIX",
+        "coupon": "",
+        "discount": 0.41,
+        "discount_coupon": 0,
+        "shipping_tier": "ENTREGA NORMAL",
+        "items": [
+          {
+            "item_id": "98097",
+            "item_name": "Luva de Segurança Tamanho G - PU Preta",
+            "item_brand": "KALIPSO",
+            "item_category": "EPI",
+            "item_category2": "Luvas de proteção",
+            "item_category3": "Malha/ Tecido",
+            "product_image_url": "https://img.lojadomecanico.com.br/256/36/316/98097/Luva-de-Seguranca-Tamanho-G---PU-Preta-kalipso-0209331.JPG",
+            "item_list_id": "VOCê_VISITOU",
+            "item_list_name": "Você Visitou",
+            "index": "",
+            "price": 4.12,
+            "quantity": 1,
+            "discount": null
+          }
+        ]
       }
     }
   },
@@ -86,12 +72,12 @@ test.beforeEach(async ({ context, page }) => {
     route.abort();
   });
 
-  if(CLIENT.SS_URL){
+  if (CLIENT.SS_URL) {
     const ss = new URL(CLIENT.SS_URL);
     await context.route(url => {
       try {
         const u = new URL(url);
-        if(u.pathname.includes('/gtm.js')) return false;
+        if (u.pathname.includes('/gtm.js')) return false;
 
         return u.hostname === ss.hostname && u.pathname.startsWith(ss.pathname);
       } catch { return false; }
@@ -99,10 +85,10 @@ test.beforeEach(async ({ context, page }) => {
   }
 
   await enableGADebug(context);
-  await page.addInitScript(() => { window.addEventListener("unload", () => {});});
+  await page.addInitScript(() => { window.addEventListener("unload", () => { }); });
   page.setDefaultTimeout(CLIENT.TIMEOUTS.DEFAULT);
 
-  page.locator(CLIENT.CONSENT.ACCEPT_BTN).click({ timeout: CLIENT.TIMEOUTS.DEFAULT }).catch(() => {});
+  page.locator(CLIENT.CONSENT.ACCEPT_BTN).click({ timeout: CLIENT.TIMEOUTS.DEFAULT }).catch(() => { });
 });
 
 test.afterEach(async ({ context }) => {
@@ -115,11 +101,11 @@ test.describe(`${CLIENT.NAME} - E-commerce`, () => {
   test("GA4 - UTMs devem ser enviadas corretamente", async ({ page, ga }) => {
     const urlWithUtm = buildUrlWithUTM(CLIENT.ECOMM.HOMEPAGE);
 
-    const [ msg ] = await Promise.all([
+    const [msg] = await Promise.all([
       waitForGAEvent(ga, "page_view"),
       page.goto(urlWithUtm, { waitUntil: "domcontentloaded" })
     ]);
-    
+
     const paramsGa4 = extractParams(msg);
     expect(paramsGa4.en).toBe("page_view");
     expect(paramsGa4.dl).toBeTruthy();
@@ -137,20 +123,20 @@ test.describe(`${CLIENT.NAME} - E-commerce`, () => {
     if (CLIENT.UTM.term) expect(paramsDl.utm_term).toBe(CLIENT.UTM.term);
 
     expect(paramsGa4.tid).toBeTruthy();
-    expect(paramsGa4.cid).toBeTruthy(); 
+    expect(paramsGa4.cid).toBeTruthy();
   });
 
   test("GA4 - add_to_cart deve disparar ao clicar no botão de adicionar ao carrinho", async ({ page, ga }) => {
     await page.goto(CLIENT.ECOMM.PRODUCT_URL, { waitUntil: "domcontentloaded" });
 
-    const addBtn = page.locator(CLIENT.ECOMM.ADD_TO_CART_BTN).first();
-    await expect(addBtn).toBeVisible();
-
-    const [ req ] = await Promise.all([
+    await page.locator(CLIENT.ECOMM.ADD_TO_CART_BTN).first().click();
+   // await expect(addBtn).toBeVisible();
+    //await page.locator(".btnAddToCart").click()
+    const [req] = await Promise.all([
       waitForGAEvent(ga, CLIENT.ECOMM.EVENTS.ADD_TO_CART),
-      addBtn.click()
+      page.getByRole('button', { name: 'Adicionar' }).click()
     ]);
-    const ga4Params = extractParams(req) 
+    const ga4Params = extractParams(req)
 
     expect(ga4Params.tid).toBeTruthy();
     expect(ga4Params.cid).toBeTruthy();
@@ -162,16 +148,16 @@ test.describe(`${CLIENT.NAME} - E-commerce`, () => {
   test("GA4 - purchase (forçado via dataLayer.push) — valida chegada no GA Debug", async ({ page, ga }) => {
     await page.goto(CLIENT.ECOMM.HOMEPAGE, { waitUntil: "domcontentloaded" });
 
-    const [ req ] = await Promise.all([
+    const [req] = await Promise.all([
       waitForGAEvent(ga, CLIENT.ECOMM.EVENTS.PURCHASE),
       page.evaluate((purchase) => {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push(purchase);
-        
+
       }, CLIENT.ECOMM.FORCED_PURCHASE)
     ]);
-    
-    const ga4Params = extractParams(req) 
+
+    const ga4Params = extractParams(req)
     expect(ga4Params.tid).toBeTruthy();
     expect(ga4Params.cid).toBeTruthy();
     expect(ga4Params.cu).toBeTruthy();
@@ -209,6 +195,6 @@ const extractParams = (msg: string) => {
       const [k, v] = p.split("=");
       if (k) params[decodeURIComponent(k)] = decodeURIComponent(v ?? "");
     }
-  } catch {}
+  } catch { }
   return params;
 };
