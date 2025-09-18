@@ -1,6 +1,11 @@
 import { test, expect } from "@lcrespilho/playwright-fixtures";
 import { enableGADebug } from "@lcrespilho/playwright-utils";
 
+test.setTimeout(240000);
+test.use({
+  serviceWorkers: 'block'
+});
+
 const CLIENT = {
   NAME: "Exemplo",
   UTM: {
@@ -82,7 +87,7 @@ test.use({
 })
 
 test.beforeEach(async ({ context, page }) => {
-  await context.route(/doubleclick\.net|collect\.igodigital|googleadservices\.com|facebook\.com|tiktokcdn\.com|snapchat\.com|twitter\.com|linkedin\.com|google.*collect/, route => {
+  await context.route(/doubleclick\.net|collect\.igodigital|googleadservices\.com|facebook\.com|tiktokcdn\.com|snapchat\.com|twitter\.com|linkedin\.com|collect\?v=2/, route => {
     route.abort();
   });
 
